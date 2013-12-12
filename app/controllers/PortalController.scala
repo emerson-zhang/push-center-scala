@@ -2,10 +2,10 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import vos.UserPushToken
-import vos.UserPushToken.pushVOReads
-import vos.UserPushToken.pushToList
+import vos.{PushPacket}
 import play.api.libs.json.{Reads, Json}
+import impl.PlatformRegisterImpl
+import PushPacket.pushPacketRead
 
 
 /**
@@ -18,20 +18,16 @@ import play.api.libs.json.{Reads, Json}
 object PortalController extends Controller{
 
   def push() = Action {
-    val json =  Json.obj("pushToken"->"asdfasdf","message"-> "String", "deviceType"->"Android" , "count"-> 0)
+    val json =  Json.parse("""{"app":{"key":"iiae7893493","secret":"werdfwserw"},"data":[{"platform":"iOS","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},{"platform":"Android","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"}]}""")
 
-    val jsons  = Json.arr(
-      Json.obj("pushToken"->"asdfasdf","message"-> "String", "deviceType"->"Android" , "count"-> 0),
-      Json.obj("pushToken"->"asdfasdf","message"-> "String", "deviceType"->"iOS" , "count"-> 20)
-    )
-
-    println(jsons)
-    val s = json.validate[UserPushToken]
+//    val s = json.validate[PushPacket]
+    val s = json.as[PushPacket]
+//    println(s)
     println(s)
-    println(s.get)
 
-    val xs:Reads[List[UserPushToken]] = jsons
-    println(xs)
+    val reg = new PlatformRegisterImpl
+    reg.load("aerwr","afasdfasr")
+
     Ok(json)
   }
 
