@@ -11,3 +11,4 @@ GET        /assets/*file        controllers.Assets.at(path="/public", file)
 GET        /push                controllers.PortalController.push
 
 GET        /test                controllers.TestController.test
+

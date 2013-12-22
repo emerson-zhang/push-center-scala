@@ -9,7 +9,7 @@ import vos.PushPacket
  * Time: 12:09 PM
  *
  */
-class BundleImpl(val packet:PushPacket,val container:Map[String,Any]) extends Bundle{
+case class BundleImpl(packet: PushPacket, container: Map[String, Any]) extends Bundle {
 
   //TODO 复制对象
   def getPushPacket: PushPacket = packet

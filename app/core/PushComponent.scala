@@ -14,12 +14,12 @@ trait PushComponent {
    * 平台名称
    * @return
    */
-  def tellMeYourPlatform:String
+  def tellMeYourPlatform: String
 
   /**
    * 推送
    * @param list
    */
-  def push(list:PushRequest)
+  def push(list: List[PushRequest])
 
 }

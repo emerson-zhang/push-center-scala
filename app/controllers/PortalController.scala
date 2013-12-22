@@ -2,10 +2,10 @@ package controllers
 
 import play.api._
 import play.api.mvc._
-import vos.{PushPacket}
-import play.api.libs.json.{Reads, Json}
+import play.api.libs.json._
 import impl.PlatformRegisterImpl
-import PushPacket.pushPacketRead
+import core.dto.AppChannel
+import vos.{PushRequest, PushPacket, PushApp}
 
 
 /**
@@ -15,18 +15,34 @@ import PushPacket.pushPacketRead
  * Time: 1:31 PM
  *
  */
-object PortalController extends Controller{
+object PortalController extends Controller {
 
   def push() = Action {
-    val json =  Json.parse("""{"app":{"key":"iiae7893493","secret":"werdfwserw"},"data":[{"platform":"iOS","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},{"platform":"Android","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"}]}""")
+    val json = Json.parse(
+      """
+         {
+           "app":{"key":"iiae7893493","secret":"werdfwserw"},
+           "data":[
+             {"platform":"iOS","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},
+             {"platform":"Android","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"}
+           ]
+         }
+      """)
 
-//    val s = json.validate[PushPacket]
-    val s = json.as[PushPacket]
-//    println(s)
+    val reg = new PlatformRegisterImpl(List.empty[AppChannel])
+    //    val s = json.validate[PushPacket]
+    val s = json.validate[PushPacket].map {
+      packet => reg.loadApp(packet.app)
+
+
+    }
+    //    println(s)
     println(s)
 
-    val reg = new PlatformRegisterImpl
-    reg.load("aerwr","afasdfasr")
+
+    reg.loadApp(PushApp("",""))
+
+
 
     Ok(json)
   }

@@ -2,6 +2,7 @@ package vos
 
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
+
 /**
  * Created with IntelliJ IDEA.
  * User: emerson
@@ -34,28 +35,19 @@ import play.api.libs.functional.syntax._
   ]
 }
  */
-case class PushPacket(app: App, data: List[PushRequest])
-
+case class PushPacket(app: PushApp, data: List[PushRequest])
 
 
 object PushPacket {
   implicit def pushPacketRead: Reads[PushPacket] = (
-    (__ \ "app").read[App] and (__ \ "data").read[List[PushRequest]]
+    (__ \ "app").read[PushApp] and (__ \ "data").read[List[PushRequest]]
     )(PushPacket.apply _)
 
 
-
 }
 
 
-case class App(key: String, secret: String) {}
 
-object App {
-
-  implicit def appReads: Reads[App] = (
-    (__ \ "key").read[String] and (__ \ "secret").read[String]
-    )(App.apply _)
-}
 
 case class PushRequest(deviceType: String, pushToken: String, count: Int, message: String) {}
 
@@ -64,6 +56,15 @@ object PushRequest {
     (__ \ "platform").read[String] and (__ \ "token").read[String] and (__ \ "count").read[Int] and (__ \ "message").read[String]
     )(PushRequest.apply _)
 
+}
+
+case class PushApp(key: String, secret: String)
+
+object PushApp {
+
+  implicit def appReads: Reads[PushApp] = (
+    (__ \ "key").read[String] and (__ \ "secret").read[String]
+    )(PushApp.apply _)
 }
 
 

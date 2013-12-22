@@ -7,6 +7,8 @@ import play.api.Play
 import scala.io.Source
 import play.api.Play.current
 import impl.pushers.{iOSPusher, AndroidPusher}
+import core.dto.AppChannel
+import vos.PushApp
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,18 +18,10 @@ import impl.pushers.{iOSPusher, AndroidPusher}
  *
  */
 
-class PlatformRegisterImpl extends PlatformRegister {
-  /**
-   *
-   * @param appName
-   * @param appPwd
-   * @return
-   * @throws IllegalStateException 找不到推送组件信息时抛出此错误
-   *                               throws when can't find the information of push components
-   *
-   */
+class PlatformRegisterImpl(val apps: List[AppChannel]) extends PlatformRegister {
+
   @throws[IllegalStateException]("找不到推送组件信息时抛出此错误 \n throws when can't find the information of push components")
-  override def load(appName: String, appPwd: String): List[PushComponent] = {
+  override def loadApp(app: PushApp): AppChannel = {
 
     def loadConfigJSFile: String = {
       val configFile = Play.getFile("conf/DevicePlatforms")
@@ -37,39 +31,12 @@ class PlatformRegisterImpl extends PlatformRegister {
     }
 
     val configJSON = Json.parse(loadConfigJSFile)
+    println(configJSON)
 
-
-
-
-    //    println(configJSON.transform( __.read[Map[String,Any]] ))
-
-    val s = configJSON.validate[List[AndroidPusher]]
-    println(s)
-
-
-
-
-
-
-    List.empty[PushComponent]
+    null
 
 
   }
-
-  //  implicit def componentReads:Reads[List[PushComponent]]=
-
-  implicit def androidConfigReads: Reads[AndroidPusher] = (
-    (__ \ "name").read[String] and (__ \ "appid").read[String] and (__ \ "appKey").read[String] and (__ \ "appSecret").read[String] and (__ \ "api").read[String]
-    )(AndroidPusher.apply _)
-
-  implicit def iOSConfigReads: Reads[iOSPusher] = (
-    (__ \ "name").read[String] and (__ \ "secret").read[String] and (__ \ "p12FilPath").read[String] and (__ \ "api").read[String]
-    )(iOSPusher.apply _)
-
-
-   case class Registrion(id: String, pwd: String, name: String, platforms: List[PushComponent])
-
-  implicit def sdf: Reads[List[AndroidPusher]] = (__ \\ "platforms").read[List[AndroidPusher]]
 
 
 }

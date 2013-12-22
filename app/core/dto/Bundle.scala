@@ -11,8 +11,9 @@ import vos.PushPacket
  */
 trait Bundle {
   //TODO 考虑此方法是否需要side effect
-  def getPushPacket :PushPacket
-  def getObject(key:String):Any
+  def getPushPacket: PushPacket
+
+  def getObject(key: String): Any
 
 }
 

@@ -1,6 +1,7 @@
 package core
 
-import vos.App
+import vos.PushApp
+import core.dto.AppChannel
 
 /**
  * Created with IntelliJ IDEA.
@@ -13,15 +14,14 @@ trait PlatformRegister {
 
   /**
    *
-   * @param appName
-   * @param appPwd
+   * @param app
    * @return
-   * @throws IllegalStateException 找不到推送组件信息时抛出此错误
+   * @throws NoSuchElementException 找不到推送组件信息时抛出此错误
    *                                throws when can't find the information of push components
    *
    */
-  @throws[IllegalStateException]("找不到推送组件信息时抛出此错误 \n throws when can't find the information of push components")
-  def load(appName: String, appPwd: String): List[PushComponent]
+  @throws[NoSuchElementException]("找不到注册的app信息时抛出此错误 \n throws when can't find the information of push components")
+  def loadApp(app: PushApp): AppChannel
 
 
 }

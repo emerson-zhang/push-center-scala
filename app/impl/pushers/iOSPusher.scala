@@ -11,7 +11,7 @@ import vos.PushRequest
  *
  */
 
-case class iOSPusher(name:String,secret:String,p12FilPath:String,api:String) extends PushComponent{
+case class iOSPusher(name: String, secret: String, p12FilPath: String, api: String) extends PushComponent {
   /**
    * 平台名称
    * @return
@@ -22,5 +22,5 @@ case class iOSPusher(name:String,secret:String,p12FilPath:String,api:String) ext
    * 推送
    * @param list
    */
-  override def push(list: PushRequest): Unit = ???
+  override def push(list: List[PushRequest]): Unit = ???
 }

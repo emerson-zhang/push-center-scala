@@ -3,7 +3,6 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.libs.json.{JsValue, Json}
-import vos.Employee
 import play.api.libs.iteratee.Enumeratee
 
 /**
@@ -13,20 +12,9 @@ import play.api.libs.iteratee.Enumeratee
  * Time: 7:06 PM
  *
  */
-object TestController  extends Controller{
+object TestController extends Controller {
 
-  def test = Action{
-
-
-//    val empJson: JsValue = Json.parse("""{"age":21,"name":"Emerson"}""")
-    val empJson: JsValue = Json.parse("""{"age":21,"name":"Emerson","pet":["ani","cat","name","RREsf"]}""")
-//    val empJson: JsValue = Json.parse("""{"age":21,"name":"Emerson","pet":[{"ani":"cat","name":"RREsf"}]}""")
-
-
-    val empObj = Json.fromJson[Employee](empJson)
-    print(empObj.getClass)
-    empObj.foreach(emp => println(emp))
-
+  def test = Action {
 
 
     Ok(Json.obj("status" -> "Ok"))

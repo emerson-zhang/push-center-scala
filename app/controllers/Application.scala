@@ -10,8 +10,8 @@ object Application extends Controller {
     Ok(views.html.index("Your new application is readerery."))
   }
 
-  def helloPlay = Action{
-    Ok(Json.obj("status"->"OK"))
+  def helloPlay = Action {
+    Ok(Json.obj("status" -> "OK"))
   }
 
 }

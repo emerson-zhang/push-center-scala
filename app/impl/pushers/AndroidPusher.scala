@@ -12,7 +12,7 @@ import vos.PushRequest
  */
 
 
-case class AndroidPusher(name:String,appid:String,appKey:String,appSecret:String,api:String) extends PushComponent{
+case class AndroidPusher(name: String, appid: String, appKey: String, appSecret: String, api: String) extends PushComponent {
   /**
    * 平台名称
    * @return
@@ -23,6 +23,6 @@ case class AndroidPusher(name:String,appid:String,appKey:String,appSecret:String
    * 推送
    * @param list
    */
-  def push(list: PushRequest): Unit = ???
+  def push(list: List[PushRequest]): Unit = ???
 }
 
