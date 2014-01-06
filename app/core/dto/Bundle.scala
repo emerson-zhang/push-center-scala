@@ -9,11 +9,5 @@ import vos.PushPacket
  * Time: 12:00 PM
  *
  */
-trait Bundle {
-  //TODO 考虑此方法是否需要side effect
-  def getPushPacket: PushPacket
-
-  def getObject(key: String): Any
-
-}
+final case class Bundle(pushPacket:PushPacket, jobId:String,  output:Output) ;
 

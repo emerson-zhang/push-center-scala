@@ -10,5 +10,5 @@ import core.dto.Bundle
  *
  */
 trait Processor {
-  def process(bundle: Bundle): Option[Any]
+  def process(bundle: Bundle)
 }

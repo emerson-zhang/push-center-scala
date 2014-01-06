@@ -13,7 +13,6 @@ import play.api.libs.functional.syntax._
 
 
 /*
-
 {
   "app": {
     "key": "iiae7893493",
@@ -35,26 +34,24 @@ import play.api.libs.functional.syntax._
   ]
 }
  */
-case class PushPacket(app: PushApp, data: List[PushRequest])
+case class PushPacket(app: PushApp, entries: List[PushEntry])
 
 
 object PushPacket {
   implicit def pushPacketRead: Reads[PushPacket] = (
-    (__ \ "app").read[PushApp] and (__ \ "data").read[List[PushRequest]]
+    (__ \ "app").read[PushApp] and (__ \ "data").read[List[PushEntry]]
     )(PushPacket.apply _)
 
 
 }
 
 
+case class PushEntry(deviceType: String, pushToken: String, count: Int, message: String) {}
 
-
-case class PushRequest(deviceType: String, pushToken: String, count: Int, message: String) {}
-
-object PushRequest {
-  implicit def pushRequestReads: Reads[PushRequest] = (
+object PushEntry {
+  implicit def pushRequestReads: Reads[PushEntry] = (
     (__ \ "platform").read[String] and (__ \ "token").read[String] and (__ \ "count").read[Int] and (__ \ "message").read[String]
-    )(PushRequest.apply _)
+    )(PushEntry.apply _)
 
 }
 

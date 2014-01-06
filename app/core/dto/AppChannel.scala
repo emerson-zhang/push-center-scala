@@ -1,6 +1,6 @@
 package core.dto
 
-import core.PushComponent
+import core.Pusher
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,4 +9,4 @@ import core.PushComponent
  * Time: 9:16 PM
  *
  */
-case class AppChannel(appKey: String, appSecret: String, pushers: List[PushComponent])
+case class AppChannel(appKey: String, appSecret: String, pushers: List[Pusher])

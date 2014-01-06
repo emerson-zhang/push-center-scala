@@ -10,7 +10,7 @@ import core.dto.AppChannel
  * Time: 12:18 PM
  *
  */
-trait PlatformRegister {
+trait AppRegister {
 
   /**
    *

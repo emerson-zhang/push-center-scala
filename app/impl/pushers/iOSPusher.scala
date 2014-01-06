@@ -1,7 +1,7 @@
 package impl.pushers
 
-import core.PushComponent
-import vos.PushRequest
+import core.Pusher
+import vos.PushEntry
 
 /**
  * Created with IntelliJ IDEA.
@@ -11,16 +11,16 @@ import vos.PushRequest
  *
  */
 
-case class iOSPusher(name: String, secret: String, p12FilPath: String, api: String) extends PushComponent {
+case class iOSPusher(secret: String, p12FilPath: String, api: String) extends Pusher {
   /**
    * 平台名称
    * @return
    */
-  override def tellMeYourPlatform: String = name //"iOS"
+  override def tellMeYourPlatform: String = "iphone"
 
   /**
    * 推送
    * @param list
    */
-  override def push(list: List[PushRequest]): Unit = ???
+  override def push(list: List[PushEntry]): Unit = ???
 }

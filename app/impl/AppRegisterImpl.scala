@@ -1,6 +1,6 @@
 package impl
 
-import core.{PushComponent, PlatformRegister}
+import core.{AppNotFoundException, Pusher, AppRegister}
 import play.api.libs.json._
 import play.api.libs.functional.syntax._
 import play.api.Play
@@ -18,25 +18,16 @@ import vos.PushApp
  *
  */
 
-class PlatformRegisterImpl(val apps: List[AppChannel]) extends PlatformRegister {
+class AppRegisterImpl( apps: List[AppChannel]) extends AppRegister {
 
-  @throws[IllegalStateException]("找不到推送组件信息时抛出此错误 \n throws when can't find the information of push components")
-  override def loadApp(app: PushApp): AppChannel = {
-
-    def loadConfigJSFile: String = {
-      val configFile = Play.getFile("conf/DevicePlatforms")
-
-      (for (line <- Source.fromFile(configFile).getLines()) yield line).mkString("")
-
+  @throws[IllegalStateException]("找不到推送组件信息时抛出此错误 <p/> throws when can't find the information of push components")
+  override def loadApp(app: PushApp): AppChannel = apps.find{
+    ch=>{
+      println(s"${ch.appKey} ${ch.appSecret}")
+      println(s"${app.key},${app.secret}")
+      (ch.appKey == app.key) && (ch.appSecret == app.secret)
     }
-
-    val configJSON = Json.parse(loadConfigJSFile)
-    println(configJSON)
-
-    null
-
-
-  }
+  }.getOrElse(throw new AppNotFoundException("未找到需要的app: "+app))
 
 
 }
@@ -64,6 +55,10 @@ class PlatformRegisterImpl(val apps: List[AppChannel]) extends PlatformRegister 
         ]
     }
  */
+
+object AppRegisterImpl{
+  def apply(apps: List[AppChannel])=new AppRegisterImpl(apps)
+}
 
 
 

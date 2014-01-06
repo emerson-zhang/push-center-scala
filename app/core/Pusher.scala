@@ -1,6 +1,6 @@
 package core
 
-import vos.PushRequest
+import vos.PushEntry
 
 /**
  * Created with IntelliJ IDEA.
@@ -9,7 +9,7 @@ import vos.PushRequest
  * Time: 12:15 PM
  *
  */
-trait PushComponent {
+trait Pusher {
   /**
    * 平台名称
    * @return
@@ -20,6 +20,6 @@ trait PushComponent {
    * 推送
    * @param list
    */
-  def push(list: List[PushRequest])
+  def push(list: List[PushEntry])
 
 }

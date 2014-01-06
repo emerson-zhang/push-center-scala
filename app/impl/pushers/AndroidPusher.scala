@@ -1,7 +1,7 @@
 package impl.pushers
 
-import core.PushComponent
-import vos.PushRequest
+import core.Pusher
+import vos.PushEntry
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,17 +12,17 @@ import vos.PushRequest
  */
 
 
-case class AndroidPusher(name: String, appid: String, appKey: String, appSecret: String, api: String) extends PushComponent {
+case class AndroidPusher(appid: String, appKey: String, appSecret: String, api: String) extends Pusher {
   /**
    * 平台名称
    * @return
    */
-  def tellMeYourPlatform: String = name //Android
+  override def tellMeYourPlatform: String = "Android"
 
   /**
    * 推送
    * @param list
    */
-  def push(list: List[PushRequest]): Unit = ???
+  override def push(list: List[PushEntry]): Unit = ???
 }
 

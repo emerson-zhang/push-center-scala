@@ -3,9 +3,9 @@ package controllers
 import play.api._
 import play.api.mvc._
 import play.api.libs.json._
-import impl.PlatformRegisterImpl
+import impl.{BeanConfiguration, AppRegisterImpl}
 import core.dto.AppChannel
-import vos.{PushRequest, PushPacket, PushApp}
+import vos.{PushEntry, PushPacket, PushApp}
 
 
 /**
@@ -21,7 +21,7 @@ object PortalController extends Controller {
     val json = Json.parse(
       """
          {
-           "app":{"key":"iiae7893493","secret":"werdfwserw"},
+           "app":{"key":"HR","secret":"handhand"},
            "data":[
              {"platform":"iOS","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},
              {"platform":"Android","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"}
@@ -29,18 +29,14 @@ object PortalController extends Controller {
          }
       """)
 
-    val reg = new PlatformRegisterImpl(List.empty[AppChannel])
+    val reg = BeanConfiguration.configAppRegister
     //    val s = json.validate[PushPacket]
     val s = json.validate[PushPacket].map {
       packet => reg.loadApp(packet.app)
 
 
     }
-    //    println(s)
-    println(s)
 
-
-    reg.loadApp(PushApp("",""))
 
 
 
