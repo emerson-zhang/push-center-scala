@@ -9,5 +9,5 @@ import vos.PushPacket
  * Time: 12:00 PM
  *
  */
-final case class Bundle(pushPacket:PushPacket, jobId:String,  output:Output) ;
+final case class Bundle(pushPacket: PushPacket, jobId: String, output: Output);
 

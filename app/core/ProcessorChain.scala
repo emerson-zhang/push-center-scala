@@ -1,7 +1,6 @@
 package core
 
 import core.dto.Bundle
-import org.slf4j.{LoggerFactory, Logger}
 
 /**
  * Created with IntelliJ IDEA.
@@ -10,13 +9,12 @@ import org.slf4j.{LoggerFactory, Logger}
  * Time: 1:33 PM
  *
  */
-class ProcessorChain(processors: List[Processor]) {
-
+class ProcessorChain(processors: List[Processor]) extends LoggerTrait {
 
 
   def process(bundle: Bundle) {
 
-    val logger = getLogger()
+    val logger = getLogger
 
     processors.foreach {
       processor => {
@@ -28,8 +26,8 @@ class ProcessorChain(processors: List[Processor]) {
         }
       }
     }
-  }
 
-  private def getLogger():Logger = LoggerFactory.getLogger(getClass)
+    logger.info("end")
+  }
 
 }

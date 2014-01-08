@@ -31,7 +31,7 @@ object BeanConfiguration {
      * 配置推送节点
      * @return
      */
-    def pushProcessor: PushProcessor = new PushProcessor
+    def pushProcessor: PushProcessor = new PushProcessor(configAppRegister)
 
     List(pushProcessor)
 
@@ -41,7 +41,7 @@ object BeanConfiguration {
    * 配置应用管理器
    * @return
    */
-  def configAppRegister:AppRegister = AppRegisterImpl(configApps)
+  def configAppRegister: AppRegister = AppRegisterImpl(configApps)
 
 
   /**
@@ -57,7 +57,7 @@ object BeanConfiguration {
      */
     def hrApp = {
       val ios = iOSPusher("asdf", "asdf", "wer")
-      val android = AndroidPusher(appid = "asdf", appKey = "adf", appSecret = "asdf", api = "api")
+      val android = AndroidPusher(appid = "asdf", appKey = "adf", appSecret = "asdf", api = "http://www.baidu.com")
       AppChannel("HR", "handhand", List(ios, android))
 
     }

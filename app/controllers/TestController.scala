@@ -1,10 +1,7 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
-import play.api.libs.json.{JsValue, Json}
-import play.api.libs.iteratee.Enumeratee
-import core.dto.OutputImp
+import play.api.libs.json.Json
 
 /**
  * Created with IntelliJ IDEA.
@@ -16,7 +13,6 @@ import core.dto.OutputImp
 object TestController extends Controller {
 
   def test = Action {
-
     Ok(Json.obj("status" -> "Ok"))
   }
 

@@ -1,11 +1,10 @@
 package controllers
 
-import play.api._
 import play.api.mvc._
 import play.api.libs.json._
-import impl.{BeanConfiguration, AppRegisterImpl}
-import core.dto.AppChannel
-import vos.{PushEntry, PushPacket, PushApp}
+import impl.BeanConfiguration
+import vos.PushPacket
+import core.dto.{OutputImp, Bundle}
 
 
 /**
@@ -17,26 +16,24 @@ import vos.{PushEntry, PushPacket, PushApp}
  */
 object PortalController extends Controller {
 
+  val chain = BeanConfiguration.processorChain()
+
   def push() = Action {
     val json = Json.parse(
       """
          {
            "app":{"key":"HR","secret":"handhand"},
            "data":[
-             {"platform":"iOS","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},
+             {"platform":"iphone","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"},
              {"platform":"Android","token":"ikqwer394jskjfksjdf","count":3,"message":"hi"}
            ]
          }
       """)
 
-    val reg = BeanConfiguration.configAppRegister
-    //    val s = json.validate[PushPacket]
     val s = json.validate[PushPacket].map {
-      packet => reg.loadApp(packet.app)
-
-
-    }
-
+      packet =>
+        chain.process(Bundle(packet, System.currentTimeMillis().toString, OutputImp()))
+    }.getOrElse(throw new RuntimeException)
 
 
 

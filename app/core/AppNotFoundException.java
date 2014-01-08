@@ -6,7 +6,7 @@ package core;
  * Date: 1/6/14
  * Time: 4:44 PM
  */
-public class AppNotFoundException extends RuntimeException{
+public class AppNotFoundException extends RuntimeException {
     public AppNotFoundException() {
     }
 

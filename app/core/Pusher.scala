@@ -1,6 +1,7 @@
 package core
 
 import vos.PushEntry
+import core.dto.Output
 
 /**
  * Created with IntelliJ IDEA.
@@ -20,6 +21,6 @@ trait Pusher {
    * 推送
    * @param list
    */
-  def push(list: List[PushEntry])
+  def push(list: Vector[PushEntry], output:Output)
 
 }
