@@ -4,6 +4,8 @@ import core.{AppRegister, Processor, ProcessorChain}
 import impl.processors.PushProcessor
 import core.dto.AppChannel
 import impl.pushers.{AndroidPusher, iOSPusher}
+import play.api.Play
+import play.api.Play.current
 
 /**
  * Created with IntelliJ IDEA.
@@ -56,11 +58,14 @@ object BeanConfiguration {
      * @return
      */
     def hrApp = {
-      val ios = iOSPusher("asdf", "asdf", "wer")
+      val ios = iOSPusher(certificatePath = Play.getFile("conf/pushResource/hr/hmbsng-apns-Production.p12").getAbsolutePath,certificatePassword = "123")
       val android = AndroidPusher(appid = "asdf", appKey = "adf", appSecret = "asdf", api = "http://www.baidu.com")
       AppChannel("HR", "handhand", List(ios, android))
 
+
     }
+
+    print(hrApp)
 
     List(hrApp)
   }

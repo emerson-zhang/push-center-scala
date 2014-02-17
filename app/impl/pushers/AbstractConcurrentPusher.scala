@@ -37,7 +37,7 @@ abstract class AbstractConcurrentPusher extends Pusher with LoggerTrait {
    * @return
    * @throws PushFailureException
    */
-  protected def getTask(entry: PushEntry, output: Output): Runnable
+  protected def getTask(entry: PushEntry, output: Output): ()=>Unit
 
   /**
    * 推送
@@ -59,8 +59,8 @@ abstract class AbstractConcurrentPusher extends Pusher with LoggerTrait {
 
           EXECUTOR.submit {
             try {
-              //利用模板模式
-              task.run()
+              //利用模板模式               s
+              task()
             } finally {
               //计数器递减
               endGate.countDown()

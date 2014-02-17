@@ -45,7 +45,7 @@ case class AndroidPusher(appid: String, appKey: String, appSecret: String, api: 
    * @return
    * @throws PushFailureException
    */
-  protected def getTask(entry: PushEntry, output: Output): Runnable = new Runnable {
+  override protected def getTask(entry: PushEntry, output: Output): ()=>Unit =  {
     def run(): Unit = {
       val logger: Logger = getLogger
       try {
@@ -71,6 +71,8 @@ case class AndroidPusher(appid: String, appKey: String, appSecret: String, api: 
         }
       }
     }
+
+    run
   }
 
   /**

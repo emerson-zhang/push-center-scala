@@ -1,8 +1,15 @@
 package impl.pushers
 
-import core.Pusher
 import vos.PushEntry
 import core.dto.Output
+import org.slf4j.Logger
+
+import scala.collection.mutable.ArrayBuffer
+import scala.collection.mutable
+import javapns.notification._
+import javapns.devices._
+import javapns.devices.implementations.basic.BasicDevice
+import javapns.communication.exceptions.CommunicationException
 
 /**
  * Created with IntelliJ IDEA.
@@ -12,7 +19,7 @@ import core.dto.Output
  *
  */
 
-case class iOSPusher(secret: String, p12FilPath: String, api: String) extends AbstractConcurrentPusher {
+case class iOSPusher(sound: String = "default", certificatePath: String, certificatePassword: String, isProduct: Boolean = true) extends AbstractConcurrentPusher {
   /**
    * 平台名称
    * @return
@@ -22,7 +29,7 @@ case class iOSPusher(secret: String, p12FilPath: String, api: String) extends Ab
   /**
    * 对象销毁时清理
    */
-  def cleanUp(): Unit = {
+  override def cleanUp(): Unit = {
 
   }
 
@@ -38,9 +45,58 @@ case class iOSPusher(secret: String, p12FilPath: String, api: String) extends Ab
    * @return
    * @throws PushFailureException
    */
-  protected def getTask(entry: PushEntry, output: Output): Runnable = new Runnable {
+  override protected def getTask(entry: PushEntry, output: Output): () => Unit = {
+
     def run(): Unit = {
 
+      import scala.collection.JavaConversions._
+      val logger: Logger = getLogger
+      try {
+
+        val pushManager: PushNotificationManager = initPushManager
+
+
+        val alert: String = entry.message
+        val badge: Int = entry.count
+        val payLoad: PushNotificationPayload = new PushNotificationPayload(alert, badge, sound)
+        val device: Device = new BasicDevice
+        device.setToken(entry.pushToken)
+        val notification: PushedNotification = pushManager.sendNotification(device, payLoad, true)
+        val notifications: mutable.Buffer[PushedNotification] = ArrayBuffer.empty[PushedNotification]
+        notifications += notification
+        val successfulNotifications: mutable.Seq[PushedNotification] = PushedNotification.findSuccessfulNotifications(notifications)
+        for (successfulNotification <- successfulNotifications) {
+          logger.trace("success: " + entry)
+          output.addSuccessEntry(entry)
+        }
+        val failedNotifications: mutable.Seq[PushedNotification] = PushedNotification.findFailedNotifications(notifications)
+        for (failedNotification <- failedNotifications) {
+          logger.error("error! Caused by: " + failedNotification.getException + ", data: " + entry)
+          output.addErrorEntry(entry, failedNotification.getException)
+        }
+      }
+      catch {
+        case e: CommunicationException => {
+          e.printStackTrace
+          logger.error("error! Caused by: " + e)
+          output.addErrorEntry(entry, e)
+        }
+        case e: Exception => {
+          logger.error("error! Caused by: " + e)
+          e.printStackTrace
+          output.addErrorEntry(entry, e)
+        }
+      }
+
     }
+
+    run
+  }
+
+  private def initPushManager: PushNotificationManager = {
+    getLogger.info("init PushNotificationManager, certificatePath: " + certificatePath)
+    val pushManager: PushNotificationManager = new PushNotificationManager
+    pushManager.initializeConnection(new AppleNotificationServerBasicImpl(certificatePath, certificatePassword, isProduct))
+    pushManager
   }
 }
